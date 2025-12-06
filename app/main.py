@@ -1,10 +1,10 @@
+from fastapi import FastAPI
 from fastapi.responses import Response
-from langgraph_utils import run_multi_agent_graph
-from mlflow_utils import log_prediction_to_mlflow
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, generate_latest
 from pydantic import BaseModel
 
-from fastapi import FastAPI
+from .langgraph_utils import run_multi_agent_graph
+from .mlflow_utils import log_prediction_to_mlflow
 
 app = FastAPI(title="LangGraph Multi-Agent API")
 

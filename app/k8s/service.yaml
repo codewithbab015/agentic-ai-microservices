@@ -9,6 +9,6 @@ spec:
     app: fastapi
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 81
+      port: 755
+      targetPort: 755
   type: ClusterIP

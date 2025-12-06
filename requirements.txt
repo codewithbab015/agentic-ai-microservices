@@ -3,6 +3,4 @@ uvicorn[standard]
 requests
 mlflow
 fastapi
-uvicorn[standard]
-requests
 prometheus_client

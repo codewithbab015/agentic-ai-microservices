@@ -18,7 +18,7 @@ spec:
         - name: fastapi
           image: mrbaloyin/fastapi-app:latest
           ports:
-            - containerPort: 81
+            - containerPort: 755
           env:
             - name: MLFLOW_TRACKING_URI
               value: "http://mlflow:5000"
@@ -27,13 +27,13 @@ spec:
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 81
+              port: 755
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 81
+              port: 755
             initialDelaySeconds: 15
             periodSeconds: 20
           resources:

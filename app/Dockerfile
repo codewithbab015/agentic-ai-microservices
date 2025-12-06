@@ -20,7 +20,7 @@ RUN uv pip install --system -r requirements.txt
 COPY . /app
 
 # Expose port
-EXPOSE 81
+EXPOSE 8002
 
 # Run the app with Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "81"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8002"]
