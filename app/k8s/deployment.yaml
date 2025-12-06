@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: fastapi
-          image: mrbaloyin/fastapi-app:latest
+          image: mrbaloyin/fastapi-app-dev:latest
           ports:
             - containerPort: 755
           env:
