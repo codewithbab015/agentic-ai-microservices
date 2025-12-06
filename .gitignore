@@ -54,3 +54,4 @@ logs/
 # Kubernetes secrets (if any)
 *-secret.yaml
 secrets/
+.github/
