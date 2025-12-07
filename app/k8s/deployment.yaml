@@ -23,7 +23,7 @@ spec:
             - name: MLFLOW_TRACKING_URI
               value: "http://mlflow:5000"
             - name: PLANNER_URL
-              value: "http://agents-planner:8080"
+              value: "http://agents-planner:8083"
           readinessProbe:
             httpGet:
               path: /healthz

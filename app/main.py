@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import Response
-from prometheus_client import CONTENT_TYPE_LATEST, Counter, generate_latest
+from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from pydantic import BaseModel
 
 from .langgraph_utils import run_multi_agent_graph
@@ -8,7 +8,16 @@ from .mlflow_utils import log_prediction_to_mlflow
 
 app = FastAPI(title="LangGraph Multi-Agent API")
 
-PRED_COUNTER = Counter("fastapi_predictions_total", "Total predictions processed")
+# Prometheus Metrics
+PRED_COUNTER = Counter(
+    "fastapi_predictions_total",
+    "Total predictions processed",
+    ["agent_name"],  # differentiate agents if multiple
+)
+
+REQUEST_LATENCY = Histogram(
+    "inference_latency_seconds", "Time spent processing inference", ["agent_name"]
+)
 
 
 class QueryRequest(BaseModel):
@@ -18,9 +27,14 @@ class QueryRequest(BaseModel):
 
 @app.post("/inference")
 def inference(payload: QueryRequest):
-    PRED_COUNTER.inc()
-    result = run_multi_agent_graph(payload.query, payload.session_id)
-    log_prediction_to_mlflow("langgraph-worker", payload.query, result["response"])
+    agent_name = "langgraph-worker"
+
+    # Measure latency and increment counter
+    with REQUEST_LATENCY.labels(agent_name=agent_name).time():
+        result = run_multi_agent_graph(payload.query, payload.session_id)
+        log_prediction_to_mlflow(agent_name, payload.query, result["response"])
+        PRED_COUNTER.labels(agent_name=agent_name).inc()
+
     return result
 
 

@@ -1,0 +1,30 @@
+strategy:
+  type: Recreate
+
+extraVolumes:
+  - name: mlflow-volume
+    persistentVolumeClaim:
+      claimName: mlflow-pvc
+
+extraVolumeMounts:
+  - name: mlflow-volume
+    mountPath: /mlflow/data
+
+backendStore:
+  defaultSqlitePath: "/mlflow/data/mlflow.db"
+
+artifactRoot:
+  proxiedArtifactStorage: true
+  defaultArtifactsDestination: "/mlflow/data/mlartifacts"
+
+service:
+  type: ClusterIP
+  port: 5000
+
+ingress:
+  enabled: true
+  hosts:
+    - host: my-mlflow-server-domain-name.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
